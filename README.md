@@ -70,7 +70,7 @@ Build the project
 
 ## Demo
 
-- [View demo](https://crud-api-todo-app.pages.dev)
+- [View demo](https://4c5f8f1b.crud-api-todo-app.pages.dev)
 
 ## Contact
 
