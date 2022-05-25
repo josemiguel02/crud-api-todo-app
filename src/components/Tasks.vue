@@ -52,24 +52,18 @@
           </template>
           <template #tbody>
             <vs-tr v-for="(item, i) in todos" :key="i" :data="item">
-              <vs-td
-                class="task-done"
-                :style="[
-                  { textDecoration: item.done == 'true' ? 'line-through' : '' },
-                ]"
-              >
+              <vs-td :class="{ 'task-done': item.done === 'true' }">
                 {{ item.title }}
               </vs-td>
-              <vs-td
-                class="task-done"
-                :style="[
-                  { textDecoration: item.done == 'true' ? 'line-through' : '' },
-                ]"
-              >
+              <vs-td :class="{ 'task-done': item.done === 'true' }">
                 {{ item.description }}
               </vs-td>
               <vs-td>
-                <button class="checkbox" @click="() => makeDone(item, i)">
+                <button
+                  type="button"
+                  class="checkbox"
+                  @click="() => makeDone(item, i)"
+                >
                   <h3 v-if="item.done == 'true'" class="checkbox-icon">
                     ✔
                   </h3>
@@ -151,25 +145,25 @@ export default {
     todos: [],
     newTodo: {
       title: '',
-      description: '',
+      description: ''
     },
     active3: false,
     editedIndex: -1,
     editedItem: {
       title: '',
       description: '',
-      done: '',
+      done: ''
     },
-    chech: true,
+    chech: true
   }),
 
   methods: {
     async getTodo() {
       try {
-        let request = await axios.get(
+        const request = await axios.get(
           'https://my-api-rest-flask.herokuapp.com/todos'
         )
-        let data = await request.data
+        const data = await request.data
         this.todos.push(...data)
       } catch (error) {
         console.error(error)
@@ -181,16 +175,18 @@ export default {
 
       try {
         if (title !== '' && description !== '') {
-          let createTodo = {
+          const createTodo = {
             title: this.newTodo.title,
             description: this.newTodo.description,
-            done: 'false',
+            done: 'false'
           }
-          let request = await axios.post(
+
+          const request = await axios.post(
             'https://my-api-rest-flask.herokuapp.com/create',
             createTodo
           )
-          let data = await request.data
+
+          const data = await request.data
           this.todos.push(data)
           this.openNotification('#3bdec8', 'Task saved successfully')
           this.newTodo = {}
@@ -227,7 +223,7 @@ export default {
           const editTodo = {
             title,
             description,
-            done: 'false',
+            done: 'false'
           }
 
           const request = await axios.put(
@@ -236,7 +232,7 @@ export default {
           )
           const data = await request.data
           this.active3 = !this.active3
-          const index = this.todos.map(e => e.id).indexOf(item.id)
+          const index = this.todos.map((e) => e.id).indexOf(item.id)
           this.todos.splice(index, 1, data)
           this.openNotification('warn', 'Task edited successfully')
         } else {
@@ -255,7 +251,7 @@ export default {
           id,
           title,
           description,
-          done: done == 'true' ? 'false' : 'true',
+          done: done === 'true' ? 'false' : 'true'
         }
 
         await axios.put(
@@ -274,14 +270,14 @@ export default {
         progress: 'auto',
         color,
         position: null,
-        title,
+        title
       })
-    },
+    }
   },
 
   created() {
     this.getTodo()
-  },
+  }
 }
 </script>
 
@@ -297,6 +293,7 @@ export default {
 .input {
   margin-bottom: 30px;
 }
+
 .table-content {
   margin-top: 40px;
 }
@@ -331,8 +328,6 @@ export default {
 }
 
 .task-done {
-  color: red;
-  font-size: 40px;
-  font-weight: 100;
+  text-decoration: line-through;
 }
 </style>
